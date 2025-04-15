@@ -62,7 +62,11 @@ def generate_prelude() -> str:
 
                     # Scalar fields.
                     elif typ is int:
-                        print(f'{p}{name:{align}} = {val} (0x{val:x})')
+                        #print(f'{p}{name:{align}} = {val} (0x{val:x})')
+                        hex_str = f"{val:x}"  
+                        if len(hex_str) % 2 != 0:  
+                            hex_str = "0" + hex_str  
+                        print(f'{p}{name:{align}} = 0x{hex_str}')
 
                     # Byte fields.
                     elif typ is bytes:
@@ -98,7 +102,9 @@ def generate_prelude() -> str:
 
                     # Custom fields.
                     elif inspect.isclass(typ):
-                        print(f'{p}{name:{align}} = {repr(val)}')
+                        hex_str = ' '.join(f'{x:02x}' for x in val)
+                        # print(f'{p}{name:{align}} = {repr(val)}')
+                        print(f'{p}{name:{align}} = hex_str')
 
                     else:
                         print(f'{p}{name:{align}} = ##{typ}##')
